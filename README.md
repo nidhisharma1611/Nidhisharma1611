@@ -1,4 +1,5 @@
-![MasterHead](https://github.com/user-attachments/assets/5b095ace-776e-4f06-ba43-4cb3cb213592)
+![MasterHead](https://github.com/user-attachments/assets/fc7245c2-9a95-4eec-afe1-53d987b78329)
+
 
 
 <h1 align="center">Hi 👋, I'm Nidhi Sharma</h1>
