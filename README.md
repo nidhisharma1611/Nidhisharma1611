@@ -1,4 +1,5 @@
-![MasterHead](https://github.com/kartavyaarora/kartavyaarora/assets/69425545/184fcccf-b705-4f22-9055-41ec482236a7)
+![MasterHead](https://github.com/user-attachments/assets/5b095ace-776e-4f06-ba43-4cb3cb213592)
+
 
 <h1 align="center">Hi 👋, I'm Nidhi Sharma</h1>
 <h3 align="center">Tech enthusiast with a B.Tech in CSE specializing in DS and AI. Data-driven and solution-oriented Analytics professional with hands-on experience in building dashboards, developing data pipelines, and enabling strategic decision-making. Proficient in SQL, Python, Power BI, and Azure tools for large-scale data analysis and business reporting. Strong background in working cross-functionally with business and product teams to deliver actionable insights, monitor KPIs, and forecast key business metrics. Adept at working in high-energy, fast-paced environments and applying statistical methods for experimentation and root cause analysis.</h3>
