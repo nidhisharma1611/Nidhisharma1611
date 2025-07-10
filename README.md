@@ -2,7 +2,8 @@
 
 <h1 align="center">Hi 👋, I'm Nidhi Sharma</h1>
 <h3 align="center">Tech enthusiast with a B.Tech in CSE specializing in DS and AI. Data-driven and solution-oriented Analytics professional with hands-on experience in building dashboards, developing data pipelines, and enabling strategic decision-making. Proficient in SQL, Python, Power BI, and Azure tools for large-scale data analysis and business reporting. Strong background in working cross-functionally with business and product teams to deliver actionable insights, monitor KPIs, and forecast key business metrics. Adept at working in high-energy, fast-paced environments and applying statistical methods for experimentation and root cause analysis.</h3>
-<img align="right" alt="Coding" width="400" src="![UTSEH078Aw](https://github.com/user-attachments/assets/5e061461-abe5-4990-bf2c-89d55bdfe6e4)
+<img align="right" alt="Coding" width="400" src="https://github.com/user-attachments/assets/6802b957-67f0-461e-905d-27ccbf0f53c0"/>
+
 >
 
 - 🔭 I’m currently working in **Bosch**
