@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nidhi Sharma — Data Engineer & BI Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  :root {
+    --bg: #050a0e;
+    --bg2: #0a1218;
+    --bg3: #0f1c26;
+    --surface: #111d27;
+    --border: rgba(0,200,255,0.12);
+    --accent: #00c8ff;
+    --accent2: #00ff9d;
+    --accent3: #ff6b6b;
+    --text: #e8f4f8;
+    --muted: #7a9aaa;
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  #cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, background 0.2s;
+    mix-blend-mode: screen;
+  }
+  #cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+    transition: transform 0.3s cubic-bezier(.17,.67,.35,1.2), opacity 0.2s;
+  }
+  body:hover #cursor { opacity: 1; }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9997;
+    opacity: 0.3;
+  }
+
+  /* Grid background */
+  .grid-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,200,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(to bottom, rgba(5,10,14,0.95), transparent);
+    backdrop-filter: blur(10px);
+  }
+  .nav-logo {
+    font-family: var(--font-head);
+    font-size: 1.2rem; font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* Sections */
+  section { position: relative; z-index: 1; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    padding: 0 4rem;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 0.8rem; font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    opacity: 0; transform: translateY(20px);
+  }
+  .hero-tag::before {
+    content: '';
+    width: 40px; height: 1px;
+    background: var(--accent);
+  }
+  .hero-name {
+    font-family: var(--font-head);
+    font-size: clamp(4rem, 9vw, 8rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    opacity: 0; transform: translateY(30px);
+  }
+  .hero-name span {
+    display: block;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-role {
+    font-family: var(--font-head);
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 400;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    opacity: 0; transform: translateY(20px);
+  }
+  .hero-desc {
+    max-width: 580px;
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    opacity: 0; transform: translateY(20px);
+  }
+  .hero-cta {
+    display: flex; gap: 1.5rem;
+    opacity: 0; transform: translateY(20px);
+  }
+  .btn-primary {
+    padding: 0.9rem 2.5rem;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .btn-primary:hover {
+    background: var(--accent2);
+    transform: translateY(-2px);
+  }
+  .btn-secondary {
+    padding: 0.9rem 2.5rem;
+    background: transparent;
+    color: var(--accent);
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .btn-secondary:hover { background: rgba(0,200,255,0.1); transform: translateY(-2px); }
+
+  /* Floating stats */
+  .hero-stats {
+    position: absolute;
+    right: 4rem; bottom: 8rem;
+    display: flex; flex-direction: column; gap: 1.5rem;
+    opacity: 0;
+  }
+  .stat-item {
+    text-align: right;
+  }
+  .stat-num {
+    font-family: var(--font-head);
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .stat-divider { width: 100%; height: 1px; background: var(--border); }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    opacity: 0;
+  }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(0.8); }
+  }
+
+  /* ABOUT */
+  #about {
+    padding: 8rem 4rem;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem; color: var(--accent);
+    letter-spacing: 0.2em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .section-label::before {
+    content: ''; width: 30px; height: 1px; background: var(--accent);
+  }
+  .section-title {
+    font-family: var(--font-head);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 3rem;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .about-text p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.85;
+    margin-bottom: 1.5rem;
+  }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .skills-cloud {
+    display: flex; flex-wrap: wrap; gap: 0.75rem;
+    margin-top: 2rem;
+  }
+  .skill-tag {
+    padding: 0.4rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .skill-tag:hover {
+    background: rgba(0,200,255,0.1);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .about-metrics { display: flex; flex-direction: column; gap: 1.5rem; }
+  .metric-card {
+    padding: 1.5rem 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    position: relative; overflow: hidden;
+    opacity: 0; transform: translateX(30px);
+  }
+  .metric-card::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 60px; height: 100%;
+    background: linear-gradient(to left, rgba(0,200,255,0.05), transparent);
+  }
+  .metric-value {
+    font-family: var(--font-head);
+    font-size: 2.2rem; font-weight: 800;
+    color: var(--accent); line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .metric-desc { font-size: 0.85rem; color: var(--muted); }
+
+  /* EXPERIENCE */
+  #experience {
+    padding: 8rem 4rem;
+    background: var(--bg2);
+    position: relative;
+  }
+  #experience::before {
+    content: 'EXPERIENCE';
+    position: absolute;
+    top: 4rem; right: 4rem;
+    font-family: var(--font-head);
+    font-size: 8rem; font-weight: 800;
+    color: rgba(0,200,255,0.03);
+    letter-spacing: -0.05em;
+    pointer-events: none; user-select: none;
+  }
+  .exp-inner { max-width: 1400px; margin: 0 auto; }
+  .timeline { position: relative; padding-left: 2rem; margin-top: 1rem; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 4rem;
+    padding-left: 3rem;
+    opacity: 0; transform: translateY(30px);
+  }
+  .timeline-dot {
+    position: absolute; left: -2.4rem; top: 0.4rem;
+    width: 12px; height: 12px;
+    background: var(--accent);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+  .timeline-company {
+    font-family: var(--font-mono);
+    font-size: 0.75rem; color: var(--accent);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .timeline-role {
+    font-family: var(--font-head);
+    font-size: 1.8rem; font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+  }
+  .timeline-date {
+    font-size: 0.85rem; color: var(--muted);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .timeline-date::before {
+    content: '';
+    width: 20px; height: 1px; background: var(--muted);
+  }
+  .project-cards { display: flex; flex-direction: column; gap: 1rem; }
+  .project-card {
+    padding: 1.5rem 2rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-top: 2px solid transparent;
+    transition: border-top-color 0.3s, transform 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .project-card:hover {
+    border-top-color: var(--accent);
+    transform: translateX(8px);
+  }
+  .project-card-title {
+    font-family: var(--font-head);
+    font-size: 1rem; font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+  .project-card ul {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .project-card ul li {
+    font-size: 0.9rem; color: var(--muted);
+    padding-left: 1.2rem; position: relative;
+    line-height: 1.6;
+  }
+  .project-card ul li::before {
+    content: '▸';
+    position: absolute; left: 0;
+    color: var(--accent); font-size: 0.75rem;
+  }
+  .project-card ul li strong { color: var(--text); font-weight: 500; }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .badge {
+    padding: 0.2rem 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: rgba(0,200,255,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(0,200,255,0.2);
+    letter-spacing: 0.05em;
+  }
+  .badge.green {
+    background: rgba(0,255,157,0.08);
+    color: var(--accent2);
+    border-color: rgba(0,255,157,0.2);
+  }
+  .badge.red {
+    background: rgba(255,107,107,0.08);
+    color: var(--accent3);
+    border-color: rgba(255,107,107,0.2);
+  }
+
+  /* PROJECTS */
+  #projects {
+    padding: 8rem 4rem;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .proj-card {
+    padding: 2.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    cursor: none;
+    opacity: 0; transform: translateY(30px);
+    transition: border-color 0.3s;
+  }
+  .proj-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--accent), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+  .proj-card:hover::before { transform: scaleX(1); }
+  .proj-card:hover { border-color: rgba(0,200,255,0.3); }
+  .proj-number {
+    font-family: var(--font-head);
+    font-size: 5rem; font-weight: 800;
+    line-height: 1;
+    color: rgba(0,200,255,0.07);
+    position: absolute; top: 1.5rem; right: 2rem;
+    letter-spacing: -0.05em;
+    pointer-events: none;
+    transition: color 0.3s;
+  }
+  .proj-card:hover .proj-number { color: rgba(0,200,255,0.12); }
+  .proj-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem; color: var(--accent);
+    letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .proj-label.featured {
+    color: var(--accent2);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .proj-label.featured::before {
+    content: '★';
+    font-size: 0.65rem;
+  }
+  .proj-title {
+    font-family: var(--font-head);
+    font-size: 1.5rem; font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .proj-desc {
+    font-size: 0.9rem; color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+  .proj-features {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .proj-features li {
+    font-size: 0.85rem; color: var(--muted);
+    padding-left: 1.2rem; position: relative;
+  }
+  .proj-features li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--accent); font-size: 0.8rem;
+  }
+  .proj-stack { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .proj-highlighted {
+    grid-column: span 2;
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(0,200,255,0.05) 100%);
+    border-color: rgba(0,200,255,0.2);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+  }
+  .proj-highlighted .proj-number { font-size: 8rem; }
+  .proj-impact {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .impact-item {
+    padding: 1rem;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .impact-val {
+    font-family: var(--font-head);
+    font-size: 1.8rem; font-weight: 800;
+    color: var(--accent2);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .impact-lbl { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+
+  /* EDUCATION */
+  #education {
+    padding: 6rem 4rem;
+    background: var(--bg2);
+  }
+  .edu-inner { max-width: 1400px; margin: 0 auto; }
+  .edu-card {
+    padding: 3rem 4rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: center; gap: 3rem;
+    position: relative; overflow: hidden;
+    opacity: 0; transform: translateY(20px);
+  }
+  .edu-card::after {
+    content: 'B.TECH';
+    position: absolute; right: 4rem; top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-head);
+    font-size: 7rem; font-weight: 800;
+    color: rgba(0,200,255,0.04);
+    pointer-events: none; white-space: nowrap;
+  }
+  .edu-degree {
+    font-family: var(--font-head);
+    font-size: 1.8rem; font-weight: 700;
+    letter-spacing: -0.02em; margin-bottom: 0.5rem;
+  }
+  .edu-school {
+    font-family: var(--font-mono);
+    font-size: 0.85rem; color: var(--accent);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .edu-tags { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .edu-year {
+    font-family: var(--font-head);
+    font-size: 4rem; font-weight: 800;
+    color: rgba(0,200,255,0.15);
+    letter-spacing: -0.05em;
+  }
+
+  /* CONTACT */
+  #contact {
+    padding: 8rem 4rem;
+    max-width: 1400px; margin: 0 auto;
+    text-align: center;
+  }
+  .contact-tagline {
+    font-family: var(--font-head);
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin-bottom: 1.5rem;
+  }
+  .contact-tagline span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .contact-sub { color: var(--muted); margin-bottom: 3rem; font-size: 1.05rem; }
+  .contact-links {
+    display: flex; justify-content: center; gap: 1.5rem;
+    flex-wrap: wrap; margin-bottom: 4rem;
+  }
+  .contact-link {
+    padding: 0.9rem 2rem;
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    display: flex; align-items: center; gap: 0.75rem;
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .contact-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,200,255,0.05);
+    transform: translateY(-3px);
+  }
+  .contact-link svg { width: 16px; height: 16px; }
+
+  /* Footer */
+  footer {
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  footer p { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+  .footer-accent { color: var(--accent); }
+
+  /* Glow orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+  }
+  .orb-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,200,255,0.06) 0%, transparent 70%);
+    top: -200px; left: -200px;
+  }
+  .orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,255,157,0.05) 0%, transparent 70%);
+    bottom: 10%; right: -100px;
+  }
+
+  /* Reveal animation base */
+  .reveal { opacity: 0; transform: translateY(30px); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { display: none; }
+    #hero, #about, #experience, .exp-inner, #projects, #education, .edu-inner, #contact { padding-left: 2rem; padding-right: 2rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .hero-stats { display: none; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .proj-highlighted { grid-column: 1; grid-template-columns: 1fr; gap: 2rem; }
+    .edu-card { grid-template-columns: 1fr; gap: 1rem; }
+    .edu-card::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">NS_</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-tag">Software Engineer · Data Domain</div>
+  <h1 class="hero-name">
+    Nidhi<br/>
+    <span>Sharma</span>
+  </h1>
+  <p class="hero-role">BI Developer &amp; Data Engineer</p>
+  <p class="hero-desc">
+    Building enterprise data systems that turn raw numbers into decisions.
+    Power BI, Python, SAP Analytics Cloud — I design pipelines that scale and
+    dashboards that actually get used.
+  </p>
+  <div class="hero-cta">
+    <a href="#experience" class="btn-primary">View Experience</a>
+    <a href="#contact" class="btn-secondary">Get In Touch</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num" data-count="25">0%</div>
+      <div class="stat-label">Decision Efficiency Gain</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num" data-count="8">0</div>
+      <div class="stat-label">Dashboards Delivered</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num" data-count="20">0+</div>
+      <div class="stat-label">KPIs Tracked</div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About Me</div>
+  <h2 class="section-title reveal">Data that<br/>drives decisions.</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        I'm a <strong>Software Engineer in the Data Domain</strong> at Bosch Global Software Technologies,
+        where I build the intelligence layer of enterprise systems — transforming messy operational data
+        into clean, reliable insights that leaders actually trust.
+      </p>
+      <p>
+        My work spans three domains: <strong>quality management BI</strong> with Power BI,
+        <strong>manufacturing analytics</strong> with SAP Analytics Cloud, and
+        <strong>customer feedback intelligence</strong> with Python-powered NLP. Each one is a different
+        lens on the same mission — making data work harder than the people who handle it.
+      </p>
+      <p>
+        I hold a B.Tech in <strong>Computer Science (Data Science &amp; AI)</strong> from SRM University,
+        and I'm a <strong>U.S. Citizen</strong> based in Bengaluru.
+      </p>
+      <div class="skills-cloud">
+        <span class="skill-tag">Power BI</span>
+        <span class="skill-tag">DAX</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">ETL Pipelines</span>
+        <span class="skill-tag">SAP Analytics Cloud</span>
+        <span class="skill-tag">Power Query</span>
+        <span class="skill-tag">NLP / Sentiment</span>
+        <span class="skill-tag">Scikit-learn</span>
+        <span class="skill-tag">Pandas / NumPy</span>
+        <span class="skill-tag">CI/CD</span>
+        <span class="skill-tag">Agile / Scrum</span>
+        <span class="skill-tag">Data Modeling</span>
+        <span class="skill-tag">EDA</span>
+      </div>
+    </div>
+    <div class="about-metrics">
+      <div class="metric-card">
+        <div class="metric-value">40%</div>
+        <div class="metric-desc">Dashboard load time improvement via optimized DAX &amp; semantic models</div>
+      </div>
+      <div class="metric-card" style="border-left-color: var(--accent2);">
+        <div class="metric-value" style="color: var(--accent2);">35%</div>
+        <div class="metric-desc">Manual reporting effort eliminated through Power BI automation</div>
+      </div>
+      <div class="metric-card" style="border-left-color: var(--accent3);">
+        <div class="metric-value" style="color: var(--accent3);">30%</div>
+        <div class="metric-desc">Faster report development via reusable ETL transformations</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">2+</div>
+        <div class="metric-desc">Years building production BI systems at enterprise scale</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="exp-inner">
+    <div class="section-label">Work History</div>
+    <h2 class="section-title reveal">Where I've<br/>built things.</h2>
+    <div class="timeline">
+
+      <!-- Bosch -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-company">Bosch Global Software Technologies</div>
+        <div class="timeline-role">Software Engineer — Data Domain</div>
+        <div class="timeline-date">Feb 2024 – Present · Bengaluru, India</div>
+        <div class="project-cards">
+
+          <div class="project-card">
+            <div class="project-card-title">⬡ BBM — Quality Management (Bosch Business Mobility)</div>
+            <ul>
+              <li>Lead Power BI Developer across <strong>5+ production dashboards</strong>; delivered 8+ interactive dashboards tracking 20+ KPIs — improving decision-making efficiency by <strong>25%</strong>.</li>
+              <li>Designed scalable data models, ETL pipelines, and Power Query transformations — cutting report development time by <strong>30%</strong>.</li>
+              <li>Optimized complex DAX measures and semantic models — improved dashboard load times by <strong>40%</strong>.</li>
+              <li>Automated workflows via Power BI Service &amp; CI/CD pipelines — reduced manual effort by <strong>35%</strong>.</li>
+              <li>Delivered data analysis on quality &amp; operational metrics — improved process efficiency by <strong>~15%</strong>.</li>
+            </ul>
+            <div class="badge-row">
+              <span class="badge">Power BI</span>
+              <span class="badge">DAX</span>
+              <span class="badge">Power Query</span>
+              <span class="badge">CI/CD</span>
+              <span class="badge">ETL</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-card-title">⬡ WERBI — Manufacturing Analytics</div>
+            <ul>
+              <li>Built and maintained ETL pipelines integrating <strong>SAP data sources</strong> for manufacturing KPI reporting.</li>
+              <li>Developed enterprise dashboards using <strong>SAP Analytics Cloud (SAC)</strong> for reporting and planning use cases.</li>
+              <li>Monitored pipeline failures, conducted root cause analysis (RCA) for data reliability and <strong>SLA compliance</strong>.</li>
+              <li>Improved sprint predictability by <strong>~15%</strong> through Agile/Scrum practices; reduced SLA breaches via proactive monitoring.</li>
+            </ul>
+            <div class="badge-row">
+              <span class="badge green">SAP Analytics Cloud</span>
+              <span class="badge green">SAP Data Sources</span>
+              <span class="badge green">RCA</span>
+              <span class="badge green">Agile</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-card-title">⬡ Feedback Analytics — Customer &amp; Stakeholder Insights</div>
+            <ul>
+              <li>Designed Power BI dashboards and optimized SQL queries to analyze customer/stakeholder feedback.</li>
+              <li>Implemented <strong>sentiment analysis</strong> using Python NLP (NLTK) — classified sentiment and identified behavioral trends.</li>
+              <li>Performed cleaning, preprocessing, transformation &amp; EDA on structured and unstructured datasets.</li>
+            </ul>
+            <div class="badge-row">
+              <span class="badge red">Python NLP</span>
+              <span class="badge red">NLTK</span>
+              <span class="badge red">SQL</span>
+              <span class="badge red">EDA</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- BioPetroClean -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-company">BioPetroClean</div>
+        <div class="timeline-role">Data Analyst Intern</div>
+        <div class="timeline-date">Feb 2022 – Jun 2022 · India</div>
+        <div class="project-cards">
+          <div class="project-card">
+            <div class="project-card-title">⬡ Plant Process Management</div>
+            <ul>
+              <li>Analyzed plant operational data to identify inefficiencies — improved plant performance by <strong>~10%</strong>.</li>
+              <li>Built SQL dashboards and Excel reports, reducing reporting time by <strong>20%</strong>.</li>
+              <li>Developed <strong>predictive maintenance models</strong> (Pandas, NumPy, Scikit-learn) — reduced downtime by <strong>15%</strong>.</li>
+              <li>Performed EDA on <strong>50K+ records</strong> to ensure data quality and analytical accuracy.</li>
+            </ul>
+            <div class="badge-row">
+              <span class="badge">Scikit-learn</span>
+              <span class="badge">Pandas</span>
+              <span class="badge">SQL</span>
+              <span class="badge">Predictive Modeling</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Featured Work</div>
+  <h2 class="section-title reveal">Projects that<br/>stand out.</h2>
+  <div class="projects-grid">
+
+    <!-- Project 1 — from resume -->
+    <div class="proj-card">
+      <div class="proj-number">01</div>
+      <div class="proj-label">Bosch · BBM</div>
+      <h3 class="proj-title">Enterprise Quality KPI<br/>Dashboard Suite</h3>
+      <p class="proj-desc">
+        End-to-end Power BI solution tracking 20+ quality KPIs across Bosch Business Mobility.
+        Built with optimized DAX, scalable data models, and fully automated refresh pipelines.
+      </p>
+      <ul class="proj-features">
+        <li>8+ interactive dashboards, 5+ in live production</li>
+        <li>40% performance improvement via semantic model optimization</li>
+        <li>CI/CD-integrated automated reporting — 35% effort reduction</li>
+      </ul>
+      <div class="proj-stack">
+        <span class="badge">Power BI</span>
+        <span class="badge">DAX</span>
+        <span class="badge">Power Query</span>
+        <span class="badge">CI/CD</span>
+      </div>
+    </div>
+
+    <!-- Project 2 — from resume -->
+    <div class="proj-card">
+      <div class="proj-number">02</div>
+      <div class="proj-label">Bosch · Feedback Analytics</div>
+      <h3 class="proj-title">Customer Sentiment<br/>Intelligence Engine</h3>
+      <p class="proj-desc">
+        Python NLP pipeline that classifies sentiment from raw customer and stakeholder
+        feedback at scale — surfacing trends and risks the business couldn't see before.
+      </p>
+      <ul class="proj-features">
+        <li>Multi-class sentiment classification using NLTK &amp; custom models</li>
+        <li>Integrated with Power BI for real-time feedback dashboards</li>
+        <li>Supported CX improvements and stakeholder reporting</li>
+      </ul>
+      <div class="proj-stack">
+        <span class="badge red">Python</span>
+        <span class="badge red">NLTK</span>
+        <span class="badge red">SQL</span>
+        <span class="badge red">Power BI</span>
+      </div>
+    </div>
+
+    <!-- Project 3 — NEW: AI Ops anomaly detection -->
+    <div class="proj-card proj-highlighted">
+      <div>
+        <div class="proj-number">03</div>
+        <div class="proj-label featured">Featured · Concept Project</div>
+        <h3 class="proj-title">Real-Time Data Pipeline<br/>Anomaly Detector</h3>
+        <p class="proj-desc">
+          A machine-learning-powered monitoring system for ETL pipelines that detects
+          data quality anomalies, schema drifts, and SLA breach risks — before they
+          cause downstream failures. Directly extends the pipeline reliability work at Bosch WERBI.
+        </p>
+        <ul class="proj-features">
+          <li>Isolation Forest + statistical drift detection on live data streams</li>
+          <li>Auto-RCA tagging: classifies anomaly type (volume, latency, schema)</li>
+          <li>Slack/Teams alerting with intelligent noise suppression</li>
+          <li>Power BI operational health dashboard with trend forecasting</li>
+        </ul>
+        <div class="proj-stack">
+          <span class="badge green">Python</span>
+          <span class="badge green">Scikit-learn</span>
+          <span class="badge green">Apache Kafka</span>
+          <span class="badge green">Power BI</span>
+          <span class="badge green">Azure Monitor</span>
+        </div>
+      </div>
+      <div class="proj-impact">
+        <div class="impact-item">
+          <div class="impact-val">~60%</div>
+          <div class="impact-lbl">Faster anomaly detection vs manual monitoring</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-val">SLA</div>
+          <div class="impact-lbl">Breach prevention through predictive alerts</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-val">Auto</div>
+          <div class="impact-lbl">Root cause classification on failure</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-val">0→1</div>
+          <div class="impact-lbl">Full-stack data ops solution</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 4 — NEW: NLP-powered BI Chatbot -->
+    <div class="proj-card" style="grid-column: span 2;">
+      <div class="proj-number">04</div>
+      <div class="proj-label featured">Featured · Concept Project</div>
+      <h3 class="proj-title">NLP-Powered BI Query Assistant</h3>
+      <p class="proj-desc">
+        A natural language interface on top of Power BI semantic models — users type plain English questions
+        and get instant DAX-generated chart responses. Bridges the gap between business users and complex data models,
+        directly building on Nidhi's expertise in both NLP and Power BI architecture.
+      </p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem;">
+        <ul class="proj-features">
+          <li>Text-to-DAX query translation using fine-tuned language models</li>
+          <li>Semantic model introspection — understands table relationships automatically</li>
+          <li>Power BI embedded rendering with voice query support</li>
+        </ul>
+        <ul class="proj-features">
+          <li>Context-aware follow-up questions ("compare that to last quarter")</li>
+          <li>Works on existing semantic models with zero schema changes needed</li>
+          <li>Audit trail and query logging for governance compliance</li>
+        </ul>
+      </div>
+      <div class="proj-stack" style="margin-top: 1rem;">
+        <span class="badge">Python</span>
+        <span class="badge">Transformers (HuggingFace)</span>
+        <span class="badge">Power BI Embedded</span>
+        <span class="badge">DAX</span>
+        <span class="badge">FastAPI</span>
+        <span class="badge">Azure OpenAI</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="edu-inner">
+    <div class="section-label">Background</div>
+    <h2 class="section-title reveal">Where it<br/>started.</h2>
+    <div class="edu-card">
+      <div>
+        <div class="edu-school">SRM University</div>
+        <div class="edu-degree">B.Tech Computer Science Engineering<br/>Data Science &amp; Artificial Intelligence</div>
+        <div class="edu-tags">
+          <span class="badge">Data Science</span>
+          <span class="badge green">Artificial Intelligence</span>
+          <span class="badge">Machine Learning</span>
+          <span class="badge">Computer Science</span>
+        </div>
+      </div>
+      <div class="edu-year">2023</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2 class="contact-tagline reveal">
+    Let's build<br/><span>something great.</span>
+  </h2>
+  <p class="contact-sub reveal">Open to new opportunities, collaborations, and interesting data challenges.</p>
+  <div class="contact-links reveal">
+    <a href="mailto:nidhisharma.ns1611@gmail.com" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      nidhisharma.ns1611@gmail.com
+    </a>
+    <a href="tel:+918860100440" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+      +91 8860100440
+    </a>
+    <a href="#" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn Profile
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 <span class="footer-accent">Nidhi Sharma</span> · Data Engineer &amp; BI Developer</p>
+  <p>Built with <span class="footer-accent">Next.js + Framer Motion</span></p>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  gsap.to(cursor, { x: mx, y: my, duration: 0.1 });
+});
+(function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('a, button, .skill-tag, .proj-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    gsap.to(cursor, { scale: 2.5, duration: 0.3 });
+    gsap.to(ring, { scale: 1.5, opacity: 0.8, duration: 0.3 });
+  });
+  el.addEventListener('mouseleave', () => {
+    gsap.to(cursor, { scale: 1, duration: 0.3 });
+    gsap.to(ring, { scale: 1, opacity: 0.5, duration: 0.3 });
+  });
+});
+
+// Hero entrance
+const tl = gsap.timeline({ delay: 0.2 });
+tl.to('.hero-tag', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+  .to('.hero-name', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, '-=0.5')
+  .to('.hero-role', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.6')
+  .to('.hero-desc', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
+  .to('.hero-cta', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+  .to('.hero-stats', { opacity: 1, duration: 1, ease: 'power2.out' }, '-=0.3')
+  .to('.scroll-indicator', { opacity: 1, duration: 0.5 }, '-=0.2');
+
+// Count-up for hero stats
+document.querySelectorAll('[data-count]').forEach(el => {
+  const target = parseInt(el.dataset.count);
+  const suffix = el.textContent.replace(/[0-9]/g, '').trim();
+  gsap.to({ val: 0 }, {
+    val: target,
+    duration: 2,
+    delay: 1.5,
+    ease: 'power2.out',
+    onUpdate: function() {
+      el.textContent = Math.round(this.targets()[0].val) + suffix;
+    }
+  });
+});
+
+// Scroll reveals
+gsap.utils.toArray('.reveal').forEach(el => {
+  gsap.to(el, {
+    opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%' }
+  });
+});
+
+// Timeline items
+gsap.utils.toArray('.timeline-item').forEach((el, i) => {
+  gsap.to(el, {
+    opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%' },
+    delay: i * 0.1
+  });
+});
+
+// Metric cards
+gsap.utils.toArray('.metric-card').forEach((el, i) => {
+  gsap.to(el, {
+    opacity: 1, x: 0, duration: 0.7, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%' },
+    delay: i * 0.12
+  });
+});
+
+// Proj cards
+gsap.utils.toArray('.proj-card').forEach((el, i) => {
+  gsap.to(el, {
+    opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 88%' },
+    delay: i * 0.1
+  });
+});
+
+// Edu card
+gsap.to('.edu-card', {
+  opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+  scrollTrigger: { trigger: '.edu-card', start: 'top 85%' }
+});
+
+// Skill tags stagger
+gsap.from('.skill-tag', {
+  opacity: 0, y: 15, scale: 0.9, duration: 0.4,
+  stagger: 0.04, ease: 'back.out(1.5)',
+  scrollTrigger: { trigger: '.skills-cloud', start: 'top 85%' }
+});
+
+// Parallax orbs
+gsap.to('.orb-1', {
+  y: -150,
+  scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 2 }
+});
+gsap.to('.orb-2', {
+  y: -100,
+  scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 3 }
+});
+
+// Project cards tilt effect
+document.querySelectorAll('.proj-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    gsap.to(card, { rotateY: x * 6, rotateX: -y * 6, duration: 0.4, ease: 'power1.out', transformPerspective: 800 });
+  });
+  card.addEventListener('mouseleave', () => {
+    gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.5, ease: 'power2.out' });
+  });
+});
+</script>
+</body>
+</html>
